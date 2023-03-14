@@ -18,9 +18,27 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.example.to_do_list.data.models.Priority
 import com.example.to_do_list.data.models.ToDoTask
 import com.example.to_do_list.ui.theme.*
+import com.example.to_do_list.util.RequestState
 
 @Composable
 fun ListContent(
+    tasks: RequestState<List<ToDoTask>>,
+    navigateToTaskScreen: (taskId: Int) -> Unit
+) {
+    if ( tasks is RequestState.Success) {
+        if (tasks.data.isEmpty()) {
+            EmptyContent()
+        } else {
+            DisplayTasks(
+                tasks = tasks.data,
+                navigateToTaskScreen = navigateToTaskScreen
+            )
+        }
+    }
+}
+
+@Composable
+fun DisplayTasks(
     tasks: List<ToDoTask>,
     navigateToTaskScreen: (taskId: Int) -> Unit
 ) {
@@ -77,10 +95,7 @@ fun TaskItem(
                 ) {
                     Canvas(
                         modifier = Modifier
-                            .width(PRIORITY_INDICATOR_SIZE)
-                            .height(
-                                PRIORITY_INDICATOR_SIZE
-                            )
+                            .size(PRIORITY_INDICATOR_SIZE)
                     ) {
                         drawCircle(
                             color = toDoTask.priority.color
