@@ -7,7 +7,6 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.runtime.*
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import com.example.to_do_list.R
 import com.example.to_do_list.ui.theme.fabBackgroundColor
 import com.example.to_do_list.ui.viewmodels.SharedViewModel
@@ -23,6 +22,7 @@ fun ListScreen(
 ) {
     LaunchedEffect(key1 = true) {
         sharedViewModel.getAllTasks()
+        sharedViewModel.readSortState()
     }
 
     val action
@@ -33,6 +33,15 @@ fun ListScreen(
 
     val searchedTasks
             by sharedViewModel.searchTasks.collectAsState()
+
+    val sortState
+            by sharedViewModel.sortState.collectAsState()
+
+    val lowPriorityTasks
+            by sharedViewModel.lowPriorityTasks.collectAsState()
+
+    val highPriorityTasks
+            by sharedViewModel.highPriorityTasks.collectAsState()
 
     val searchAppBarState: SearchAppBarState
             by sharedViewModel.searchAppBarState
@@ -64,9 +73,16 @@ fun ListScreen(
         content = {
             ListContent(
                 allTasks = allTasks,
+                lowPriorityTasks = lowPriorityTasks,
+                highPriorityTasks = highPriorityTasks,
+                sortState = sortState,
                 searchedTasks = searchedTasks,
                 searchAppBarState = searchAppBarState,
-                navigateToTaskScreen = navigateToTaskScreen
+                navigateToTaskScreen = navigateToTaskScreen,
+                onSwipeToDelete = { action, toDoTask ->
+                    sharedViewModel.action.value = action
+                    sharedViewModel.updateTaskFields(selectedTask = toDoTask)
+                }
             )
         },
         floatingActionButton = {
@@ -128,12 +144,14 @@ private fun setActionLabel(action: Action): String {
         "OK"
     }
 }
+
 private fun setMessage(action: Action, taskTitle: String): String {
     return when (action) {
         Action.DELETE_ALL -> "All Tasks Removed"
         else -> "${action.name}: $taskTitle"
     }
 }
+
 private fun undoDeletedTask(
     action: Action,
     snackBarResult: SnackbarResult,
