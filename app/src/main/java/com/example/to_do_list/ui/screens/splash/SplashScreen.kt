@@ -18,6 +18,7 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.example.to_do_list.R
 import com.example.to_do_list.ui.theme.LOGO_HEIGHT
@@ -51,6 +52,18 @@ fun SplashScreen(
         delay(SPLASH_SCREEN_DELAY)
         navigateToListScreen()
     }
+
+    Splash(
+        offSetState = offSetState,
+        alphaState = alphaState
+    )
+}
+
+@Composable
+fun Splash(
+    offSetState: Dp,
+    alphaState: Float
+) {
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -80,17 +93,13 @@ fun getLogo(): Int {
 @Composable
 @Preview
 private fun SplashScreenPreview() {
-    SplashScreen(
-        navigateToListScreen = {}
-    )
+    Splash(offSetState = 0.dp, alphaState = 1f)
 }
 
 @Composable
 @Preview
 private fun SplashScreenPreview2() {
     TodolistTheme(darkTheme = true) {
-        SplashScreen(
-            navigateToListScreen = {}
-        )
+        Splash(offSetState = 0.dp, alphaState = 1f)
     }
 }

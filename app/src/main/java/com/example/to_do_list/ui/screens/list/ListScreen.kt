@@ -42,21 +42,19 @@ fun ListScreen(
     val highPriorityTasks
             by sharedViewModel.highPriorityTasks.collectAsState()
 
-    val searchAppBarState: SearchAppBarState
-            by sharedViewModel.searchAppBarState
+    val searchAppBarState: SearchAppBarState = sharedViewModel.searchAppBarState
 
-    val searchTextState: String
-            by sharedViewModel.searchTextState
+    val searchTextState: String = sharedViewModel.searchTextState
 
     val scaffoldState = rememberScaffoldState()
 
     DisplaySnackBar(
         scaffoldState = scaffoldState,
-        onComplete = { sharedViewModel.action.value = it },
+        onComplete = { sharedViewModel.updateAction(it) },
         onUndoClicked = {
-            sharedViewModel.action.value = it
+            sharedViewModel.updateAction(it)
         },
-        taskTitle = sharedViewModel.title.value,
+        taskTitle = sharedViewModel.title,
         action = action
     )
 
@@ -79,7 +77,7 @@ fun ListScreen(
                 searchAppBarState = searchAppBarState,
                 navigateToTaskScreen = navigateToTaskScreen,
                 onSwipeToDelete = { action, toDoTask ->
-                    sharedViewModel.action.value = action
+                    sharedViewModel.updateAction(action)
                     sharedViewModel.updateTaskFields(selectedTask = toDoTask)
                     scaffoldState.snackbarHostState.currentSnackbarData?.dismiss()
                 }
