@@ -2,12 +2,11 @@ package com.example.to_do_list.navigation.destinations
 
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavType
 import com.google.accompanist.navigation.animation.composable
 import androidx.navigation.navArgument
-
-
 import com.example.to_do_list.ui.screens.list.ListScreen
 import com.example.to_do_list.ui.viewmodels.SharedViewModel
 import com.example.to_do_list.util.Constants.LIST_ARGUMENT_KEY
@@ -31,7 +30,12 @@ fun NavGraphBuilder.listComposable(
             sharedViewModel.action.value = action
         }
 
+        val databaseAction
+                by sharedViewModel.action
+
+
         ListScreen(
+            action = databaseAction,
             navigateToTaskScreen = navigateToTaskScreen,
             sharedViewModel = sharedViewModel
         )
