@@ -23,11 +23,10 @@ import androidx.compose.ui.unit.dp
 import com.example.to_do_list.R
 import com.example.to_do_list.ui.theme.LOGO_HEIGHT
 import com.example.to_do_list.ui.theme.TodolistTheme
-import com.example.to_do_list.ui.theme.splashScreenBackground
 import com.example.to_do_list.util.Constants.SPLASH_SCREEN_DELAY
 import kotlinx.coroutines.delay
 
-
+/*
 @Composable
 fun SplashScreen(
     navigateToListScreen: () -> Unit
@@ -103,3 +102,5 @@ private fun SplashScreenPreview2() {
         Splash(offSetState = 0.dp, alphaState = 1f)
     }
 }
+
+ */
